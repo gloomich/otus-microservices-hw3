@@ -36,8 +36,7 @@ namespace UserApi.DataAccess
         public static IServiceCollection UseUserDb(this IServiceCollection services, IConfiguration configuration)
         {            
             services.AddDbContext<UserDbContext>(opt =>
-                opt.UseNpgsql(configuration.ParseConnectionString()));
-            services.AddDatabaseDeveloperPageExceptionFilter();
+                opt.UseNpgsql(configuration.ParseConnectionString()));            
 
             return services;
         }

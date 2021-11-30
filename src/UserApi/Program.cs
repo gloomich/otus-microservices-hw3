@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Prometheus;
 using UserApi.DataAccess;
 
 if (args.Contains("-m"))
@@ -15,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 DbExtensions.UseUserDb(builder.Services, builder.Configuration);
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services
     .AddHealthChecks()
@@ -24,16 +26,26 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//builder.Services.AddSingleton<MetricReporter>();
+
 var app = builder.Build();
+
+app.UseRouting();
+
+app.UseHttpMetrics();
+//app.UseMiddleware<ResponseMetricMiddleware>();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.MapControllers();
-
-app.UseRouting();
-
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.UseEndpoints(endpoints =>
 {
@@ -69,6 +81,8 @@ app.UseEndpoints(endpoints =>
             [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
         }
     });
+
+    endpoints.MapMetrics();
 });
 
 app.Run();
