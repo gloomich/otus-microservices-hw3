@@ -28,8 +28,8 @@ namespace UserApi.Services.Metrics
             finally
             {
                 sw.Stop();
-                reporter.RegisterRequest();
-                reporter.RegisterResponseTime(httpContext.Response.StatusCode, httpContext.Request.Method, sw.Elapsed);
+                reporter.RegisterRequestCount(httpContext.Request.Method, httpContext.Request.Path, httpContext.Response.StatusCode);
+                reporter.RegisterRequestLatency(httpContext.Request.Method, httpContext.Request.Path, sw.Elapsed);
             }
         }
     }

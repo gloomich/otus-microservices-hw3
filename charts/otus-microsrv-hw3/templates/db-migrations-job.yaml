@@ -1,17 +1,17 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "otus-microsrv-hw2.fullname" . }}-{{ .Release.Revision }}
+  name: {{ include "otus-microsrv-hw3.fullname" . }}-{{ .Release.Revision }}
   labels:
-    {{- include "otus-microsrv-hw2.labels" . | nindent 4 }}
+    {{- include "otus-microsrv-hw3.labels" . | nindent 4 }}
 spec:
   backoffLimit: 10
   template:
     metadata:
       labels:
-        {{- include "otus-microsrv-hw2.selectorLabels" . | nindent 8 }}
+        {{- include "otus-microsrv-hw3.selectorLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ include "otus-microsrv-hw2.serviceAccountName" . }} 
+      serviceAccountName: {{ include "otus-microsrv-hw3.serviceAccountName" . }} 
       initContainers:
       - name: {{ .Chart.Name }}-job-init-wait-postgres
         image: "groundnuty/k8s-wait-for:v1.3"
@@ -26,7 +26,7 @@ spec:
         args: ["UserApi.dll", "-m"]
         envFrom:
             - configMapRef:
-                 name: hw2-config 
+                 name: hw3-config 
             - secretRef:
-                 name: hw2-secrets
+                 name: hw3-secrets
       restartPolicy: {{ .Values.job.restartPolicy }}

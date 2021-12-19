@@ -5,32 +5,37 @@ namespace UserApi.Services.Metrics
     public class MetricReporter
     {
         private readonly ILogger<MetricReporter> _logger;
-        private readonly Counter _requestCounter;
-        private readonly Histogram _responseTimeHistogram;
+        private readonly Counter _requestCount;
+        private readonly Histogram _requestLatency;
 
         public MetricReporter(ILogger<MetricReporter> logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            _requestCounter =
-                Prometheus.Metrics.CreateCounter("total_requests", "The total number of requests serviced by this API.");
-
-            _responseTimeHistogram = Prometheus.Metrics.CreateHistogram("request_duration_seconds",
-                "The duration in seconds between the response to a request.", new HistogramConfiguration
+            _requestLatency = Prometheus.Metrics.CreateHistogram(
+                "app_request_latency_seconds",
+                "Application Request Latency", 
+                new HistogramConfiguration
                 {
-                    Buckets = Histogram.ExponentialBuckets(0.01, 2, 10),
-                    LabelNames = new[] { "status_code", "method" }
+                    LabelNames = new[] { "method", "endpoint" }                   
                 });
+
+            _requestCount = Prometheus.Metrics.CreateCounter(
+                "app_request_count",
+                "Application Request Count",
+                new[] { "method", "endpoint", "http_status" });
         }
 
-        public void RegisterRequest()
+        public void RegisterRequestLatency(string method, string endpoint, TimeSpan elapsed)
         {
-            _requestCounter.Inc();
+            _requestLatency.Labels(method, endpoint)
+                .Observe(elapsed.TotalSeconds);
         }
 
-        public void RegisterResponseTime(int statusCode, string method, TimeSpan elapsed)
+        public void RegisterRequestCount(string method, string endpoint, int statusCode)
         {
-            _responseTimeHistogram.Labels(statusCode.ToString(), method).Observe(elapsed.TotalSeconds);
-        }
+            _requestCount.WithLabels(method, endpoint, statusCode.ToString())
+                .Inc();
+        }        
     }
 }

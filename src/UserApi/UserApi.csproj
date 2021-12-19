@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-	<DockerfileTag>otus-microsrvs-hw2-user-api</DockerfileTag>
+	<DockerfileTag>otus-microsrvs-hw3-user-api-metrics</DockerfileTag>
 	<DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
 	<UserSecretsId>0dd55f2f-35fc-4d99-ad52-3fb3651508b5</UserSecretsId>
   </PropertyGroup>

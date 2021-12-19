@@ -1,11 +1,11 @@
-# Default values for otus-microsrv-hw2.
+# Default values for otus-microsrv-hw3.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 2
 
 image:
-  repository: gloomich/otus-microsrvs-hw2-user-api
+  repository: gloomich/otus-microsrvs-hw3-user-api-metrics
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -73,6 +73,10 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
+metrics:
+  serviceMonitor:
+    enabled: true
+
 autoscaling:
   enabled: false
   minReplicas: 1
@@ -101,3 +105,10 @@ postgresql:
     autoMount: true
   persistence:
     size: 1Gi
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+    extraEnvVars:
+      - name: PG_EXPORTER_AUTO_DISCOVER_DATABASES
+        value: "true"

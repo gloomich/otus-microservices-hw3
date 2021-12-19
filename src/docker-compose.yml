@@ -6,7 +6,7 @@ networks:
 
 services:
   userapi:
-    image: ${DOCKER_REGISTRY-}otus-microsrvs-hw2-user-api
+    image: ${DOCKER_REGISTRY-}otus-microsrvs-hw3-user-api-metrics
     depends_on:
       - "postgres_image"
     build:

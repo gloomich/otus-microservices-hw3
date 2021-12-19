@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "otus-microsrv-hw2.fullname" . }}
+  name: {{ include "otus-microsrv-hw3.fullname" . }}
   labels:
-    {{- include "otus-microsrv-hw2.labels" . | nindent 4 }}
+    {{- include "otus-microsrv-hw3.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "otus-microsrv-hw2.fullname" . }}
+    name: {{ include "otus-microsrv-hw3.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

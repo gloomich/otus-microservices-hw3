@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Prometheus;
 using UserApi.DataAccess;
+using UserApi.Services.Metrics;
 
 if (args.Contains("-m"))
 {
@@ -20,7 +21,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services
     .AddHealthChecks()
-    .AddDbContextCheck<UserDbContext>(tags: new[] { "db_context" });
+    .AddDbContextCheck<UserDbContext>(tags: new[] { "db_context" })
+    .ForwardToPrometheus();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
