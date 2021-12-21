@@ -11,13 +11,7 @@ spec:
       labels:
         {{- include "otus-microsrv-hw3.selectorLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ include "otus-microsrv-hw3.serviceAccountName" . }} 
-      initContainers:
-      - name: {{ .Chart.Name }}-job-init-wait-postgres
-        image: "groundnuty/k8s-wait-for:v1.3"
-        args:
-        - "pod"
-        - "-ljob-waiting=pg-waiting-anchor"	     
+      serviceAccountName: {{ include "otus-microsrv-hw3.serviceAccountName" . }}   
       containers:
       - name: {{ .Chart.Name }}-job        
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"

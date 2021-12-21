@@ -91,24 +91,8 @@ tolerations: []
 affinity: {}
 
 postgresql:
-  enabled: true  
+  postgresqlHost: "pg-postgresql"
+  postgresqlPort: 5432
   postgresqlDatabase: "users"
   postgresqlUsername: "postgres"
-  postgresqlPassword: "postgres"
-  service:
-    port: "5432"
-  commonLabels: 
-    job-waiting: "pg-waiting-anchor"
-  serviceAccount:
-    enabled: true
-    name: "sa-migration"
-    autoMount: true
-  persistence:
-    size: 1Gi
-  metrics:
-    enabled: true
-    serviceMonitor:
-      enabled: true
-    extraEnvVars:
-      - name: PG_EXPORTER_AUTO_DISCOVER_DATABASES
-        value: "true"
+  postgresqlPassword: "postgres"  

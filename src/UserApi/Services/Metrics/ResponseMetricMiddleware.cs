@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace UserApi.Services.Metrics
 {
@@ -28,8 +29,16 @@ namespace UserApi.Services.Metrics
             finally
             {
                 sw.Stop();
-                reporter.RegisterRequestCount(httpContext.Request.Method, httpContext.Request.Path, httpContext.Response.StatusCode);
-                reporter.RegisterRequestLatency(httpContext.Request.Method, httpContext.Request.Path, sw.Elapsed);
+
+                var uri = new Uri(httpContext.Request.GetDisplayUrl());
+                var endpint = uri.Segments.Length > 0 
+                    ? uri.Segments.Length > 1 
+                        ? $"{uri.Segments[0]}{uri.Segments[1]}" 
+                        : uri.Segments[0] 
+                    : "/";
+
+                reporter.RegisterRequestCount(httpContext.Request.Method, endpint, httpContext.Response.StatusCode);
+                reporter.RegisterRequestLatency(httpContext.Request.Method, endpint, sw.Elapsed);
             }
         }
     }

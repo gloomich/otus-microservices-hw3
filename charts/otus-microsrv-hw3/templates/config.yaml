@@ -9,8 +9,8 @@ kind: ConfigMap
 metadata:
   name: hw3-config
 data: 
-  postgresql-host: {{ (include "postgresql.fullname" .) | quote }}
-  postgresql-port: {{ .Values.postgresql.service.port | quote }}
+  postgresql-host: {{ .Values.postgresql.postgresqlHost | quote }}
+  postgresql-port: {{ .Values.postgresql.postgresqlPort | quote }}
   postgresql-db: {{ .Values.postgresql.postgresqlDatabase | quote }}
   postgresql-user: {{ .Values.postgresql.postgresqlUsername | quote }}
 ---

@@ -28,14 +28,14 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.Services.AddSingleton<MetricReporter>();
+builder.Services.AddSingleton<MetricReporter>();
 
 var app = builder.Build();
 
 app.UseRouting();
 
-app.UseHttpMetrics();
-//app.UseMiddleware<ResponseMetricMiddleware>();
+//app.UseHttpMetrics();
+app.UseMiddleware<ResponseMetricMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

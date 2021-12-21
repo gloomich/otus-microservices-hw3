@@ -17,11 +17,13 @@ namespace UserApi.DataAccess
         }
 
         public static void RunMigrations(string[] args)
-        {
+        {            
             var builder = WebApplication.CreateBuilder(args);
 
+            var cs = builder.Configuration.ParseConnectionString();
+            Console.WriteLine(cs);
             builder.Services.AddDbContext<UserDbContext>(opt =>
-                opt.UseNpgsql(builder.Configuration.ParseConnectionString()));
+                opt.UseNpgsql(cs));
 
             var app = builder.Build();
 
@@ -34,9 +36,11 @@ namespace UserApi.DataAccess
         }
 
         public static IServiceCollection UseUserDb(this IServiceCollection services, IConfiguration configuration)
-        {            
+        {
+            var cs = configuration.ParseConnectionString();
+            Console.WriteLine(cs);
             services.AddDbContext<UserDbContext>(opt =>
-                opt.UseNpgsql(configuration.ParseConnectionString()));            
+                opt.UseNpgsql(cs));            
 
             return services;
         }
