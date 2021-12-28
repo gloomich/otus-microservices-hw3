@@ -19,6 +19,11 @@ helm repo update
 helm install prom prometheus-community/kube-prometheus-stack -f ./prom/prometheus.yaml --atomic
 ```
 
+- Add dashboard
+```
+kubectl apply -f ./prom/grafana.yaml
+```
+
 - Install ingress
 ```
 helm install nginx ingress-nginx/ingress-nginx -f nginx-ingress.yaml --atomic
@@ -42,11 +47,6 @@ kubectl port-forward service/prom-kube-prometheus-stack-prometheus 9090
 - Open grafana port (admin:prom-operator)
 ```
 kubectl port-forward service/prom-grafana 9000:80
-```
-
-- Add dashboard
-```
-kubectl apply -f grafana.yaml
 ```
 
 Swagger URL: http://arch.homework/swagger/
